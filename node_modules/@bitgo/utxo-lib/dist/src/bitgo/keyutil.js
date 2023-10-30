@@ -1,0 +1,37 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.privateKeyBufferFromECPair = exports.privateKeyBufferToECPair = void 0;
+const noble_ecc_1 = require("../noble_ecc");
+/**
+ * Create an ECPair from the raw private key bytes
+ * @param {Buffer} buffer - Private key for the ECPair. Must be exactly 32 bytes.
+ * @param {Object} [network] - Network for the ECPair. Defaults to bitcoin.
+ * @return {ECPair}
+ */
+function privateKeyBufferToECPair(buffer, network) {
+    if (!Buffer.isBuffer(buffer) || buffer.length !== 32) {
+        throw new Error('invalid private key buffer');
+    }
+    return noble_ecc_1.ECPair.fromPrivateKey(buffer);
+}
+exports.privateKeyBufferToECPair = privateKeyBufferToECPair;
+/**
+ * Get the private key as a 32 bytes buffer. If it is smaller than 32 bytes, pad it with zeros
+ * @param {ECPair} ecPair
+ * @return Buffer 32 bytes
+ */
+function privateKeyBufferFromECPair(ecPair) {
+    if (ecPair.constructor.name !== 'ECPair') {
+        throw new TypeError(`invalid argument ecpair`);
+    }
+    const privkey = ecPair.privateKey;
+    if (!Buffer.isBuffer(privkey)) {
+        throw new Error(`unexpected privkey type`);
+    }
+    if (privkey.length !== 32) {
+        throw new Error(`unexpected privkey length`);
+    }
+    return privkey;
+}
+exports.privateKeyBufferFromECPair = privateKeyBufferFromECPair;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoia2V5dXRpbC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3NyYy9iaXRnby9rZXl1dGlsLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7OztBQUVBLDRDQUFzQztBQUV0Qzs7Ozs7R0FLRztBQUNILFNBQWdCLHdCQUF3QixDQUFDLE1BQWMsRUFBRSxPQUFpQjtJQUN4RSxJQUFJLENBQUMsTUFBTSxDQUFDLFFBQVEsQ0FBQyxNQUFNLENBQUMsSUFBSSxNQUFNLENBQUMsTUFBTSxLQUFLLEVBQUUsRUFBRTtRQUNwRCxNQUFNLElBQUksS0FBSyxDQUFDLDRCQUE0QixDQUFDLENBQUM7S0FDL0M7SUFFRCxPQUFPLGtCQUFNLENBQUMsY0FBYyxDQUFDLE1BQU0sQ0FBQyxDQUFDO0FBQ3ZDLENBQUM7QUFORCw0REFNQztBQUVEOzs7O0dBSUc7QUFDSCxTQUFnQiwwQkFBMEIsQ0FBQyxNQUF1QjtJQUNoRSxJQUFJLE1BQU0sQ0FBQyxXQUFXLENBQUMsSUFBSSxLQUFLLFFBQVEsRUFBRTtRQUN4QyxNQUFNLElBQUksU0FBUyxDQUFDLHlCQUF5QixDQUFDLENBQUM7S0FDaEQ7SUFFRCxNQUFNLE9BQU8sR0FBRyxNQUFNLENBQUMsVUFBVSxDQUFDO0lBQ2xDLElBQUksQ0FBQyxNQUFNLENBQUMsUUFBUSxDQUFDLE9BQU8sQ0FBQyxFQUFFO1FBQzdCLE1BQU0sSUFBSSxLQUFLLENBQUMseUJBQXlCLENBQUMsQ0FBQztLQUM1QztJQUNELElBQUksT0FBTyxDQUFDLE1BQU0sS0FBSyxFQUFFLEVBQUU7UUFDekIsTUFBTSxJQUFJLEtBQUssQ0FBQywyQkFBMkIsQ0FBQyxDQUFDO0tBQzlDO0lBRUQsT0FBTyxPQUFPLENBQUM7QUFDakIsQ0FBQztBQWRELGdFQWNDIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgRUNQYWlySW50ZXJmYWNlIH0gZnJvbSAnZWNwYWlyJztcbmltcG9ydCB7IE5ldHdvcmsgfSBmcm9tICcuLi9uZXR3b3Jrcyc7XG5pbXBvcnQgeyBFQ1BhaXIgfSBmcm9tICcuLi9ub2JsZV9lY2MnO1xuXG4vKipcbiAqIENyZWF0ZSBhbiBFQ1BhaXIgZnJvbSB0aGUgcmF3IHByaXZhdGUga2V5IGJ5dGVzXG4gKiBAcGFyYW0ge0J1ZmZlcn0gYnVmZmVyIC0gUHJpdmF0ZSBrZXkgZm9yIHRoZSBFQ1BhaXIuIE11c3QgYmUgZXhhY3RseSAzMiBieXRlcy5cbiAqIEBwYXJhbSB7T2JqZWN0fSBbbmV0d29ya10gLSBOZXR3b3JrIGZvciB0aGUgRUNQYWlyLiBEZWZhdWx0cyB0byBiaXRjb2luLlxuICogQHJldHVybiB7RUNQYWlyfVxuICovXG5leHBvcnQgZnVuY3Rpb24gcHJpdmF0ZUtleUJ1ZmZlclRvRUNQYWlyKGJ1ZmZlcjogQnVmZmVyLCBuZXR3b3JrPzogTmV0d29yayk6IEVDUGFpckludGVyZmFjZSB7XG4gIGlmICghQnVmZmVyLmlzQnVmZmVyKGJ1ZmZlcikgfHwgYnVmZmVyLmxlbmd0aCAhPT0gMzIpIHtcbiAgICB0aHJvdyBuZXcgRXJyb3IoJ2ludmFsaWQgcHJpdmF0ZSBrZXkgYnVmZmVyJyk7XG4gIH1cblxuICByZXR1cm4gRUNQYWlyLmZyb21Qcml2YXRlS2V5KGJ1ZmZlcik7XG59XG5cbi8qKlxuICogR2V0IHRoZSBwcml2YXRlIGtleSBhcyBhIDMyIGJ5dGVzIGJ1ZmZlci4gSWYgaXQgaXMgc21hbGxlciB0aGFuIDMyIGJ5dGVzLCBwYWQgaXQgd2l0aCB6ZXJvc1xuICogQHBhcmFtIHtFQ1BhaXJ9IGVjUGFpclxuICogQHJldHVybiBCdWZmZXIgMzIgYnl0ZXNcbiAqL1xuZXhwb3J0IGZ1bmN0aW9uIHByaXZhdGVLZXlCdWZmZXJGcm9tRUNQYWlyKGVjUGFpcjogRUNQYWlySW50ZXJmYWNlKTogQnVmZmVyIHtcbiAgaWYgKGVjUGFpci5jb25zdHJ1Y3Rvci5uYW1lICE9PSAnRUNQYWlyJykge1xuICAgIHRocm93IG5ldyBUeXBlRXJyb3IoYGludmFsaWQgYXJndW1lbnQgZWNwYWlyYCk7XG4gIH1cblxuICBjb25zdCBwcml2a2V5ID0gZWNQYWlyLnByaXZhdGVLZXk7XG4gIGlmICghQnVmZmVyLmlzQnVmZmVyKHByaXZrZXkpKSB7XG4gICAgdGhyb3cgbmV3IEVycm9yKGB1bmV4cGVjdGVkIHByaXZrZXkgdHlwZWApO1xuICB9XG4gIGlmIChwcml2a2V5Lmxlbmd0aCAhPT0gMzIpIHtcbiAgICB0aHJvdyBuZXcgRXJyb3IoYHVuZXhwZWN0ZWQgcHJpdmtleSBsZW5ndGhgKTtcbiAgfVxuXG4gIHJldHVybiBwcml2a2V5O1xufVxuIl19

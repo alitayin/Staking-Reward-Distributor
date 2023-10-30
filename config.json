@@ -1,0 +1,15 @@
+{
+  "addresses": [
+    {
+      "address": "ecash:qqj2zzk8wvljxdh0ppz3fll08t89cpfctgwkaut6x7",
+      "totalAmount": "381099000",
+      "isValid": "true",
+      "rewardDistribution": {
+        "address": "ecash:qr6lws9uwmjkkaau4w956lugs9nlg9hudqs26lyxkv",
+        "percentage": "1.0000"
+      }
+    }
+  ],
+  "proof": "000000000000000068bbb468000000002103bd30305b1517e40cc24968f3dd5ea6954bc98a89ba3cbb9132a7d8d652d9eb1b01809448ea26063cbaf8bf4351c46c6ad21b027a800c9bcba002daace5a3fd00f000000000e0ec86df08000000be16150041049ce0cc3259943c58b824510f8fe55c958121235cbe1306f38e793884f920c67f2b241ed38973ac78204f490a0b1432eb69eb7befed07f8e7b0fb3f53f46d7fa881fbec735e8ad8b3b70b5cf5722dfcb01610d9cd6173c93837ef349159cc7b331f07ab4a64863e2a409f9568621d25811d0c1513a6bd769c827ea834ad1698db1976a91462647ca399f8c50543e1b0286c3a3cca80ab326288acefbdd05692a865ab628ef7089e8aad600ef10fbc30cc8b38a54d8f82f6fa923cc9d328ef988a656002cedd0e2e35752c6667884627be5b62f50eac6792829074",
+  "payoutAddress": "ecash:qz3druwms85gsrwyvtznd46kh7my8x7hqqed0w2c5w"
+}
