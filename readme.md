@@ -11,13 +11,13 @@ Here are the detailed steps to install and use:
     Clone this repository to your local environment.
 
     ```bash
-    git clone <repository_url>
+    git clone https://github.com/alitayin/Staking-Reward-Distributor.git
     ```
 
     Navigate to the project directory:
 
     ```bash
-    cd <project_directory>
+    cd Staking-Reward-Distributor
     ```
 
 2. **Install dependencies**
@@ -25,7 +25,7 @@ Here are the detailed steps to install and use:
     Install the required dependencies.
 
     ```bash
-    npm install --save express body-parser axios node-fetch dotenv @bitgo/utxo-lib ecashaddrjs chronik-client
+    npm install
     ```
 
 3. **Set up environment variables**
@@ -40,7 +40,7 @@ Here are the detailed steps to install and use:
 
     ```bash
     PRIVATE_KEY_WIF=<your_private_key>
-    UTXO_ADDRESS=<your_utxo_address>
+    UTXO_ADDRESS=<your_utxo_address> // same as your payout address
     ```
 
 4. **Run the application**
