@@ -51,7 +51,7 @@ Here are the detailed steps to install and use:
     node app.js
     ```
 
-    The application will be running on port 3333, so make sure this port is allowed through your firewall.
+    The application will be running on port 3333,(http://localhost:3333) localhost=your vps ip.  so make sure this port is allowed through your firewall.
 
 5. **Configure the distribution**
 
@@ -68,4 +68,7 @@ Here are the detailed steps to install and use:
 
     To stop the application, you can use `pm2 stop app.js`.
 
+
 This tool checks every 10 seconds. If your payout address has more than 0.625M xec, it will automatically distribute the rewards proportionally based on the addresses you specified in the settings.
+
+Please note that this process is not completely trustless, as you receive the rewards of the stakes delegated to you. Even if you send the rewards out right away, this brief control over other user's funds can be considered a money transmitter service. It is not recommended to provide staking services in a commercial manner with this tool, without holding a money transmitter license or other necessary licensing.
