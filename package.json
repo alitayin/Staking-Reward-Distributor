@@ -1,6 +1,6 @@
 {
   "name": "srd",
-  "version": "0.1.0",
+  "version": "0.5.0",
   "description": "This is a script capable of automatically distributing staking rewards, and it comes with a simple configuration panel. ",
   "main": "app.js",
   "scripts": {
@@ -9,10 +9,11 @@
   "author": "t.me/alitayin",
   "license": "MIT",
   "dependencies": {
-    "@bitgo/utxo-lib": "^9.16.0",
+ "@bitgo/utxo-lib": "^9.16.0",
     "axios": "^1.6.0",
     "body-parser": "^1.20.2",
     "chronik-client": "^0.8.5",
+    "dotenv": "^16.3.1",
     "ecashaddrjs": "^1.5.3",
     "express": "^4.18.2"
   }
