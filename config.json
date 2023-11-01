@@ -1,15 +1,15 @@
 {
   "addresses": [
     {
-      "address": "000",
+      "address": "ecash:qr6lws9uwmjkkaau4w956lugs9nlg9hudqs26lyxkv",
       "totalAmount": "100",
       "isValid": "true",
       "rewardDistribution": {
-        "address": "000",
-        "percentage": "0"
+        "address": "ecash:qr6lws9uwmjkkaau4w956lugs9nlg9hudqs26lyxkv",
+        "percentage": "0.88"
       }
     }
   ],
   "proof": "000",
-  "payoutAddress": "000"
+  "payoutAddress": "ecash:qr6lws9uwmjkkaau4w956lugs9nlg9hudqs26lyxkv"
 }
