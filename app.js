@@ -7,6 +7,9 @@ const { getBalance } = require('./utils/balance.js');
 const { createRawXecTransaction } = require('./utils/tx3.js');
 const getStatus = require('./utils/status.js');
 
+const { postSubmit, postEdit } = require('./controllers.js');
+
+
 setInterval(async () => {
   try {
     // 从config.json文件中获取payoutAddress
@@ -145,57 +148,8 @@ let editInputs = config.addresses.map((address, index) =>
   `);
 });
 
-app.post('/submit', async (req, res) => {
-  const proof = req.body.proof;
-
-  let config;
-  try {
-    const configData = await fs.readFile('config.json', 'utf8');
-    config = JSON.parse(configData);
-  } catch (err) {
-    console.error(err);
-    config = { addresses: [] };
-  }
-  config.proof = proof; 
-
-  await fs.writeFile('config.json', JSON.stringify(config, null, 2), 'utf8');
-
-  // 运行 check.js 和 checkProofPayout.js
-  await check();
-  await checkProofPayout();
-
-  res.redirect('/');
-});
-
-app.post('/edit', async (req, res) => {
-  let newAddresses = req.body.addresses;
-
-  let totalPercentage = 0;
-  for (let address of newAddresses) {
-    totalPercentage += parseFloat(address.rewardDistribution.percentage);
-  }
-
-  if (totalPercentage > 1) {
-    res.status(400).send('The total of Reward Distribution Percentage must be less than or equal to 1.');
-    return;
-  }
-
-  let config;
-  try {
-    const configData = await fs.readFile('config.json', 'utf8');
-    config = JSON.parse(configData);
-  } catch (err) {
-    console.error(err);
-    config = { addresses: [] };
-  }
-
-  // 只更新 addresses 字段
-  config.addresses = newAddresses;
-
-  await fs.writeFile('config.json', JSON.stringify(config, null, 2), 'utf8');
-
-  res.redirect('/');
-});
+app.post('/submit', postSubmit);
+app.post('/edit', postEdit);
 
 app.listen(3333, () => {
   console.log('Server is running on port 3333');
