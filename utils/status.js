@@ -1,15 +1,28 @@
 const fs = require('fs');
-const fetch = require('node-fetch');
+const http = require('http');
 const path = require('path');
 require('dotenv').config(); // 读取.env文件
 
 const configFile = path.resolve(__dirname, '../config.json');
 
-async function verifyProof(proof) {
-  const response = await fetch(`http://ecashrpc.alitayin.com:3080/verifyavalancheproof?proof=${proof}`);
-  const data = await response.json();
-  return data; // Assuming response is a boolean
-}
+const verifyProof = (proof) => {
+  return new Promise((resolve, reject) => {
+    http.get(`http://ecashrpc.alitayin.com:3080/verifyavalancheproof?proof=${proof}`, (res) => {
+      let data = '';
+
+      res.on('data', (chunk) => {
+        data += chunk;
+      });
+
+      res.on('end', () => {
+        resolve(JSON.parse(data));
+      });
+
+    }).on('error', (err) => {
+      reject(err);
+    });
+  });
+};
 
 function areDependenciesInstalled() {
   const dependencies = ['ecashaddrjs', '@bitgo/utxo-lib', 'dotenv', 'fs', 'chronik-client'];

@@ -1,15 +1,132 @@
 {
   "addresses": [
     {
-      "address": "ecash:qr6lws9uwmjkkaau4w956lugs9nlg9hudqs26lyxkv",
-      "totalAmount": "100",
-      "isValid": "true",
+      "address": "ecash:qqqhs587zev7yzr6uvh0p0jmnthshq5xwyn2y9j74j",
+      "totalAmount": 989999993,
+      "isValid": true,
       "rewardDistribution": {
-        "address": "ecash:qr6lws9uwmjkkaau4w956lugs9nlg9hudqs26lyxkv",
-        "percentage": "0.88"
+        "address": "rewardAddress",
+        "percentage": "0.1004"
+      }
+    },
+    {
+      "address": "ecash:qz9dfuqc33c3x62ea4avfsq528q5g2sucvpj22dnfe",
+      "totalAmount": 311217750.71,
+      "isValid": true,
+      "rewardDistribution": {
+        "address": "rewardAddress",
+        "percentage": "0.0316"
+      }
+    },
+    {
+      "address": "ecash:qp094jdk6dlkxjvk4gnkvuc3rn8tv9tszc6rv62aup",
+      "totalAmount": 381215477.84,
+      "isValid": true,
+      "rewardDistribution": {
+        "address": "rewardAddress",
+        "percentage": "0.0387"
+      }
+    },
+    {
+      "address": "ecash:qzc3ahlnp74rtln0w77un0z2jelsfe9gayyhn99aw2",
+      "totalAmount": 248429135.19,
+      "isValid": true,
+      "rewardDistribution": {
+        "address": "rewardAddress",
+        "percentage": "0.0252"
+      }
+    },
+    {
+      "address": "ecash:qz05gx5mnsm2vwt32egj59cvxvv0f2dxcgskmqxray",
+      "totalAmount": 194086836.82,
+      "isValid": true,
+      "rewardDistribution": {
+        "address": "rewardAddress",
+        "percentage": "0.0197"
+      }
+    },
+    {
+      "address": "ecash:qrensxykpw3gxr3w7jlygq8v9zsgg0hqkvqzuudhhm",
+      "totalAmount": 2239749125.84,
+      "isValid": true,
+      "rewardDistribution": {
+        "address": "rewardAddress",
+        "percentage": "0.2271"
+      }
+    },
+    {
+      "address": "ecash:qzzxjwsdvfqdrwxrp397u6an5vp0dua42grkxqm94x",
+      "totalAmount": 329527777.35,
+      "isValid": true,
+      "rewardDistribution": {
+        "address": "rewardAddress",
+        "percentage": "0.0334"
+      }
+    },
+    {
+      "address": "ecash:qrdj0ck58j029hhvgvt50wqryx4n5ckc5glms0egxt",
+      "totalAmount": 1842558223.3,
+      "isValid": true,
+      "rewardDistribution": {
+        "address": "rewardAddress",
+        "percentage": "0.1869"
+      }
+    },
+    {
+      "address": "ecash:qqfk6qggftfzlfvasdphww7u7wwkygkydvjwhpzh9j",
+      "totalAmount": 1000000000,
+      "isValid": true,
+      "rewardDistribution": {
+        "address": "rewardAddress",
+        "percentage": "0.1014"
+      }
+    },
+    {
+      "address": "ecash:qpyz07l8nr09n28xxc2rnmp8tjhdfsgas5xana7m3n",
+      "totalAmount": 1000000000,
+      "isValid": true,
+      "rewardDistribution": {
+        "address": "rewardAddress",
+        "percentage": "0.1014"
+      }
+    },
+    {
+      "address": "ecash:qqsxy0rk0jpd2mejj7gkf0arfakupp73xv3gc347rp",
+      "totalAmount": 496474284.71000004,
+      "isValid": true,
+      "rewardDistribution": {
+        "address": "rewardAddress",
+        "percentage": "0.0504"
+      }
+    },
+    {
+      "address": "ecash:qrvel9dqs2n59kqvwmqd03q308v3vh8fgguya5ks2c",
+      "totalAmount": 167274947.61,
+      "isValid": true,
+      "rewardDistribution": {
+        "address": "rewardAddress",
+        "percentage": "0.0170"
+      }
+    },
+    {
+      "address": "ecash:qqq4p6rl3swn2dake7m7f9zms2mx46fj3ycuwt4h2h",
+      "totalAmount": 188974302.48,
+      "isValid": true,
+      "rewardDistribution": {
+        "address": "rewardAddress",
+        "percentage": "0.0192"
+      }
+    },
+    {
+      "address": "ecash:qqkqpwpkx2hpan9xfqwf2yj9utwuxphj8yv5kpqz7s",
+      "totalAmount": 470896258.35,
+      "isValid": true,
+      "rewardDistribution": {
+        "address": "rewardAddress",
+        "percentage": "0.0478"
       }
     }
   ],
-  "proof": "000",
-  "payoutAddress": "ecash:qr6lws9uwmjkkaau4w956lugs9nlg9hudqs26lyxkv"
+  "proof": "00000000000000004210b465000000002102b988b7208d1685b7d5bb57cd99a5d02ee965c65b53c6620e7e532021197dbe610f4b5c6683eb83bb6f4b9e69c0d0f9a6d7e85fa985bb40544cd85ec732b93a49e601000000441bdc0c17000000602c160021028b57004dbd156efb14bd1b78643a90e2ed1a80a547b268ea91482637b9376c73f579bca07e5f09e99cf8dc01b8adff92a25b65094bd9829029fb5874c148a1c78d794414dfb45d0b7f28a4ccb0c87a8417c96ca5ed32c4a3a589b272183627c1e2a61e996aca236ed457679eb7efbdfa2214348587db9ccbf1252c7d2413615a00000000df99003f07000000be5a1600210326b7dbef14e607cd45fcfa7c0c73f30844c13b600cf18b97f05cfb1d4b005b0f253a16b7aff8a3ce131dc2211216747a514850aebe923a0444e696a42401fc44da724205d9c0bacac11dfcfb173eb441c0e8cd1c885b9c53f3bd60b3e4ace35790814d65b007de9010dbbd98cf9f5d2f7a87d39eba382dd82783286fc45d2c560000000008a838e008000000625616002103f0b5c1fa3b8cc48949697fd28b3cc6291b0a288cf7bcb501c1c7f38d2156a83c14aa3b2cea34c5e0a4df9b453f03b7372344216befbd2ec6ea08aa646b0b9cc0fdfaa0e3a1de24e576d75440727ae29efbb23d31452c6f375bd7df17e420d2796fea5327daad168f473e521f85d422ba9b160c8c34a4246fdb0358981f9e14af00000000efc6c0c8050000007c5e16002102d3f6d2e9f22532d2f289cec958bbeee0acaf79a46691c9895908206249cca59ab078253ec4ddd3cf22dec79479a9ad2b20a2c804fbfe3168b1c2762447deba359f0f861a2f645b8c1b6c2809988574826caf48d85a47c1d28129bf801380f60685427f5aca22eb213dfa933db0f782e3e2a789a550d9d19c4c962dfdca9541a300000000a202d98404000000a85016002102796bf68c875ff2fbc939367da6f05a03feb9fb5ba4946d8deced43928e7958ecc735dc2540e06b6c12fe83232cdd8e7f9e0d9902f1cf879ee9fdb6b3cd07e263b3355eadea33e62b3a39ee7970923dd56211d569afbf8df5c19117e20920b41b024fab495ef96d664de869be9c149345540a46587f546b449d114bf73477a68c0000000048f2f12534000000ae2016002103f888cff5640120178921f7981dd693429685ab39f00110d0963748f8c75467cc553b8d6ba85c76a0ba1e263c72daa7f62f3cec38ff7f81ee4a7b5365a46d225194c8bda632f9efc4bd80a42475b272a7f44f29b63c38b6bd2af14c76982b869e35f5ebd93478eb8d9ee05cd33cdc617eae7da6750af834729f3fb8ba43d3093800000000077c23ac070000001494170021028c93a02a2d18b33fb453c9d817daae83c2d9682a7688dc156a5e8a9578fdf24dfbe828bff0f0a442e24f9635280ee6080072a32eaf31ffc71f7fa8e39c1ed8d248a16b977c84b22753e0c2d2e6c2314a7ae9ef064c7f43b12552ed3aa2fe99a85b145f2bd9fcafa6885c2b5e93df80b76d2ba15ea7046ae74c461c3e1704cfbe00000000fab980e62a000000b620160021035765bb138e60c05da8551395514a1467051c12044fa7b6230d59ddd46ead700206fa946e001b51e55279f990c1bb57d38fc4ed55d3422174ba6f9481a9386d3235057dc75d17bc1974bff42e95ec4c8704c38af5182a79e7c0a208e2b2ec9f539138704518fbbe49e01eea8c679323e8bb1f0fb94b5d55be44041f59f39899c30100000000e8764817000000ae20160021028f8c5945a7e420546b539373a4753e3ef24689b186bcd853178348d90f8e8aadd5043f134c4a4e582ab5747b9651637ad006dc3fe92e8b9a76c4b99a5cb171b246f26b9f9e0082ac57a27c7c3b85628cf5cabc5a5b9e7e73bc40b375d591ca70a7208b0793957ab58fb7c63ea3adb3255a34ed6d95abd5b9114046652537cc0a0100000000e8764817000000ae2016002103142e769d8de0cab862f955a7c7fb472bbecb8b8f59088c13dcff8503d956919fc838faa2854a012236e19bc22ff5545b1a5625233ed08444b4f79ecbdd2f05267cb8b84a854cdcfb8d2c6263884d8f592e334a4bfe13f9c7e6ab8f0a540f7891016389cc985372108e32740ff65440e46c83ed7b46fe5142cb56126ce32598a60000000062c7abb2040000009a82160021032c7f4d4d7181839de57e3a82321af0e2d12b51e3370a96ee67ce0778ce325c38fd2aac45ab6630e99bdfdcce1bae9b8c74854a2b2be327b10e27788eddcc2a35a8531085793d9a4b9898a8079741ebe82a6be1a384950779e152372ef412dac6e59fbf7cf02ed4e59f22a1085346fc020706f573e66ca9f07eab8b19e5ca3a8b00000000695009e503000000704c16002103b2e04fe30ee5c336c36dd6d745ae74e7272ef97ddfdc3188b6a3344326a5d41d2093f9041fcf2726a8aaee5e3a32d8053af0d4f843d672b66c9b80aee1476284b076551ecff4ab000122efaa0a084c70dd575d27d1a6a052e8b5b6d36c387f8fce6d9b03c8ca7abaafdda92fda077ecf5393a0de9144f95f8a83402e7e68b2f900000000e8e65f6604000000de79170021039dd7054b94c2e58c7aa3c8c1bc64c58422504d361969c5621484c0d21cd5b07a433ae53cf2e58579e8433eed7f14d07d30b2732bfb86708b82bb39a3875595d34e27e1f1f0153f0e70d7e23c9ea6f54e39922411d8904030b0b5a605b5361cc05d4df5e1df8f130f11f973a3ec824a5bb35a66f53f937716a485fff4089643a20000000015dc8bdc06000000847f160021032c7f4d4d7181839de57e3a82321af0e2d12b51e3370a96ee67ce0778ce325c38c06676565630bea90c5d2fa45c3de127fe1471a8bdc6cc4943c58910f2a8d6925c2b776079e22fc729b5983f6b9a187275de8e7ccf429b2626ad7fc20ff57c7a63474cd2415eef5e2e7a849918201f4f4d88d6852a111e9fd54d5224d96401ef00000000ebaac2f60a0000009e5516002102e61e39d218bb89d70e5982ef075248c4a749440eb4b9e60c8a7b4e32442e5895069de4b6fdcf8971d9650f3a19b132e6b02a8c64a84ed8427f6e6e42e216571769fd13ef04f67ec098922a75c790ddcd4d3854cf99a0d1101810a8307e5738ce1976a914066f83c9a49e2639b5f0fb03f4da1b387c7e8ad188ac7489627cbbbaf17b629b39ddb9ef66b753771e2daab1cd15a077da7a46600e2441952eabd11ff494be1ab1f3f15c7fcc9022aca1c506618210b59d2938e3e3f1",
+  "payoutAddress": "ecash:qqrxlq7f5j0zvwd47ras8ax6rvu8cl526y86jg3ddg"
 }
