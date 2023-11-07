@@ -45,14 +45,45 @@ async function getUtxos(address) {
 
 async function createRawXecTransaction(outputs) {
  try {
+
+  const privateKeyWIF = process.env.PRIVATE_KEY_WIF;
+  const keyPair = utxolib.ECPair.fromWIF(privateKeyWIF, utxolib.networks.ecash);
+  const utxoAddress = process.env.UTXO_ADDRESS;
+
+  // 从 getUtxos 函数获取 UTXO
+  const utxos = await getUtxos(utxoAddress);
+  if (utxos.length === 0) {
+    console.log('No UTXOs found for the given address');
+    return;
+  }
+
+  // 筛选非 SLP 的 UTXO
+  const nonSlpUtxos = utxos.filter(utxo => !utxo.slpToken);
+    // 如果没有非 SLP 的 UTXO，返回
+    if (nonSlpUtxos.length === 0) {
+        console.log('No non-SLP UTXOs found for the given address');
+        return;
+      }
+
+      // 选择最大的 UTXO
+    const utxo = nonSlpUtxos.reduce((max, current) => (current.value > max.value ? current : max));
+
+    const txb = utxolib.bitgo.createTransactionBuilderForNetwork(utxolib.networks.ecash);
+
+    txb.addInput(utxo.txId, utxo.vout);
+        // 尝试将 utxoAddress 转换为遗留格式，并捕获可能的错误
+
+
  const addresses = config.addresses;
 
 const outputs = addresses.map(addr => {
   const rewardAddress = addr.rewardDistribution.address;
-  
-  console.log('Reward address:', rewardAddress);  // 打印 rewardAddress
 
-  const amount = 62500000 * addr.rewardDistribution.percentage;
+  const amount = Math.round((utxo.value - 450) * addr.rewardDistribution.percentage);
+  
+  console.log('Reward address:', rewardAddress, ' Amount:', amount);  // 打印 rewardAddress
+
+ 
   
   return {
     address: rewardAddress,
@@ -60,41 +91,7 @@ const outputs = addresses.map(addr => {
   };
 });
 
-    const privateKeyWIF = process.env.PRIVATE_KEY_WIF;
-    const keyPair = utxolib.ECPair.fromWIF(privateKeyWIF, utxolib.networks.ecash);
-    const utxoAddress = process.env.UTXO_ADDRESS;
-
-    // 从 getUtxos 函数获取 UTXO
-    const utxos = await getUtxos(utxoAddress);
-    if (utxos.length === 0) {
-      console.log('No UTXOs found for the given address');
-      return;
-    }
-
-    // 筛选非 SLP 的 UTXO
-    const nonSlpUtxos = utxos.filter(utxo => !utxo.slpToken);
-      // 如果没有非 SLP 的 UTXO，返回
-      if (nonSlpUtxos.length === 0) {
-          console.log('No non-SLP UTXOs found for the given address');
-          return;
-        }
-
-        // 选择最大的 UTXO
-        const utxo = nonSlpUtxos.reduce((max, current) => (current.value > max.value ? current : max));
-
-        const txb = utxolib.bitgo.createTransactionBuilderForNetwork(utxolib.networks.ecash);
-
-        txb.addInput(utxo.txId, utxo.vout);
-          // 尝试将 utxoAddress 转换为遗留格式，并捕获可能的错误
-// 尝试将 utxoAddress 转换为遗留格式，并捕获可能的错误
-let legacyUtxoAddress;
-try {
-  legacyUtxoAddress = ecashaddrjs.toLegacy(utxoAddress);
-} catch (error) {
-  console.error('Error converting utxoAddress:', error);
-  return;
-}
-
+ 
 
 let totalOutputValue = 0;
 outputs.forEach(({ address, amount }) => {
@@ -102,14 +99,22 @@ outputs.forEach(({ address, amount }) => {
   txb.addOutput(legacyAddress, amount);
   totalOutputValue += amount;
 });
-
+console.log ('Total output value:',totalOutputValue);
 
 // 计算交易费
 const fee = outputs.length * 300;
-
+// 尝试将 utxoAddress 转换为遗留格式，并捕获可能的错误
+let legacyUtxoAddress;
+try {
+legacyUtxoAddress = ecashaddrjs.toLegacy(utxoAddress);
+} catch (error) {
+console.error('Error converting utxoAddress:', error);
+return;
+}
 // 计算找零并添加找零输出
-const changeAmount = utxo.value - totalOutputValue - fee;
-txb.addOutput(legacyUtxoAddress, changeAmount);
+//const changeAmount = Math.round(utxo.value - totalOutputValue - fee);
+//console.log('Change amount:',changeAmount);
+//txb.addOutput(legacyUtxoAddress, changeAmount);
 
           // 签名输入
           const hashType = utxolib.Transaction.SIGHASH_ALL | 0x40;
@@ -121,7 +126,7 @@ txb.addOutput(legacyUtxoAddress, changeAmount);
       // 广播交易
       let broadcastResponse;
       try {
-        broadcastResponse = await chronik.broadcastTx(rawTxHex);
+        broadcastResponse = await chronik.broadcastTx(rawTxHex,false);
         if (!broadcastResponse) {
           throw new Error('Empty chronik broadcast response');
         }
