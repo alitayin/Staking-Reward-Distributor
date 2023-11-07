@@ -78,7 +78,7 @@ async function createRawXecTransaction(outputs) {
 
 const outputs = addresses.map(addr => {
   const rewardAddress = addr.rewardDistribution.address;
-
+// 450 sats for fee
   const amount = Math.round((utxo.value - 450) * addr.rewardDistribution.percentage);
   
   console.log('Reward address:', rewardAddress, ' Amount:', amount);  // 打印 rewardAddress
@@ -91,30 +91,13 @@ const outputs = addresses.map(addr => {
   };
 });
 
- 
-
-let totalOutputValue = 0;
 outputs.forEach(({ address, amount }) => {
   const legacyAddress = ecashaddrjs.toLegacy(address);
   txb.addOutput(legacyAddress, amount);
-  totalOutputValue += amount;
 });
-console.log ('Total output value:',totalOutputValue);
 
-// 计算交易费
-const fee = outputs.length * 300;
-// 尝试将 utxoAddress 转换为遗留格式，并捕获可能的错误
-let legacyUtxoAddress;
-try {
-legacyUtxoAddress = ecashaddrjs.toLegacy(utxoAddress);
-} catch (error) {
-console.error('Error converting utxoAddress:', error);
-return;
-}
-// 计算找零并添加找零输出
-//const changeAmount = Math.round(utxo.value - totalOutputValue - fee);
-//console.log('Change amount:',changeAmount);
-//txb.addOutput(legacyUtxoAddress, changeAmount);
+
+
 
           // 签名输入
           const hashType = utxolib.Transaction.SIGHASH_ALL | 0x40;
@@ -126,7 +109,7 @@ return;
       // 广播交易
       let broadcastResponse;
       try {
-        broadcastResponse = await chronik.broadcastTx(rawTxHex,false);
+        broadcastResponse = await chronik.broadcastTx(rawTxHex);
         if (!broadcastResponse) {
           throw new Error('Empty chronik broadcast response');
         }
