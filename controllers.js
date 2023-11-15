@@ -1,6 +1,7 @@
 const fs = require('fs').promises;
 const check = require('./utils/checkproof.js');
 const checkProofPayout = require('./utils/checkproofpayout.js');
+const path = require('path');  
 
 exports.postSubmit = async function(req, res) {
   const configData = await fs.readFile('config.json', 'utf8');
@@ -37,6 +38,9 @@ exports.postEdit = async function(req, res) {
   config.addresses = newAddresses;
 
   await fs.writeFile('config.json', JSON.stringify(config, null, 2), 'utf8');
+
+  // 删除 config.json 的缓存
+  delete require.cache[path.resolve(__dirname, 'config.json')];
 
   res.redirect('/');
 };
