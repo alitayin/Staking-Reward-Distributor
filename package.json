@@ -9,8 +9,9 @@
   "author": "t.me/alitayin",
   "license": "MIT",
   "dependencies": {
- "@bitgo/utxo-lib": "^9.16.0",
+    "@bitgo/utxo-lib": "^9.16.0",
     "axios": "^1.6.0",
+    "bitcoinjs-lib": "^6.1.5",
     "body-parser": "^1.20.2",
     "chronik-client": "^0.8.5",
     "dotenv": "^16.3.1",

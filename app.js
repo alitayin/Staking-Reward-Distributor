@@ -42,7 +42,7 @@ setInterval(async () => {
   } catch (error) {
     console.error('Error in balance check interval:', error);
   }
-}, 10 * 1000);  // 每分钟检查一次
+}, 30 * 1000);  // 每分钟检查一次
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));

@@ -32,6 +32,8 @@ async function getUtxos(address) {
       txId: utxo.outpoint.txid,
       vout: utxo.outpoint.outIdx,
       value: parseInt(utxo.value),
+      isCoinbase: utxo.isCoinbase,
+      height: utxo.blockHeight,
       address: address,
       slpToken: utxo.slpMeta,
     }));
@@ -64,9 +66,16 @@ async function createRawXecTransaction(outputs) {
         console.log('No non-SLP UTXOs found for the given address');
         return;
       }
+  const blockchaininfo = await chronik.blockchainInfo();
+  // 选择最大的 UTXO
+  const utxo = nonSlpUtxos.reduce((oldest, current) => (current.height < oldest.height ? current : oldest));
+    if (utxo.isCoinbase) {
 
-      // 选择最大的 UTXO
-    const utxo = nonSlpUtxos.reduce((max, current) => (current.value > max.value ? current : max));
+      if (blockchaininfo.tipHeight <= (utxo.height + 100)) {
+        console.log ('Coinbase UTXO immature');
+        return;
+      }
+    }
 
     const txb = utxolib.bitgo.createTransactionBuilderForNetwork(utxolib.networks.ecash);
 
