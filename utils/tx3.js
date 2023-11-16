@@ -70,7 +70,6 @@ async function createRawXecTransaction(outputs) {
   // 选择最大的 UTXO
   const utxo = nonSlpUtxos.reduce((oldest, current) => (current.height < oldest.height ? current : oldest));
     if (utxo.isCoinbase) {
-
       if (blockchaininfo.tipHeight <= (utxo.height + 100)) {
         console.log ('Coinbase UTXO immature');
         return;
