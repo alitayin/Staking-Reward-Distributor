@@ -59,22 +59,20 @@ async function createRawXecTransaction(outputs) {
     return;
   }
 
-  // 筛选非 SLP 的 UTXO
-  const nonSlpUtxos = utxos.filter(utxo => !utxo.slpToken);
+  // Filter only coinbase UTXOs
+  const coinbaseUtxos = utxos.filter(utxo => utxo.isCoinbase);
     // 如果没有非 SLP 的 UTXO，返回
-    if (nonSlpUtxos.length === 0) {
-        console.log('No non-SLP UTXOs found for the given address');
+    if (coinbaseUtxos.length === 0) {
+        console.log('No Coinbase UTXOs found for the given address');
         return;
-      }
+      };
   const blockchaininfo = await chronik.blockchainInfo();
   // 选择最大的 UTXO
-  const utxo = nonSlpUtxos.reduce((oldest, current) => (current.height < oldest.height ? current : oldest));
-    if (utxo.isCoinbase) {
+  const utxo = coinbaseUtxos.reduce((oldest, current) => (current.height < oldest.height ? current : oldest));
       if (blockchaininfo.tipHeight <= (utxo.height + 100)) {
         console.log ('Coinbase UTXO immature');
         return;
-      }
-    }
+      };
 
     const txb = utxolib.bitgo.createTransactionBuilderForNetwork(utxolib.networks.ecash);
 
