@@ -11,7 +11,7 @@ const { postSubmit, postEdit } = require('./controllers.js');
 
 
 setInterval(async () => {
-  try {
+
     // 从config.json文件中获取payoutAddress
     const configData = await fs.readFile('config.json', 'utf8');
     const config = JSON.parse(configData);
@@ -19,29 +19,16 @@ setInterval(async () => {
 
     console.log('Payout address:', payoutAddress);  // 打印出地址
 
-    // 获取余额
-    const balance = await getBalance(payoutAddress);
+    const status = await getStatus();
 
-    console.log('Balance:', balance);  // 打印出余额
-
-    // 如果余额大于625000，发送交易
-    if (balance > 625000) {
-      console.log('Balance is greater than 6250, sending transaction...');
-      
-      // 获取状态
-      const status = await getStatus();
-
-      // 只有在 isValid 为 true 时才执行交易
-      if (status.isValid) {
+    // 只有在 isValid 为 true 时才执行交易
+    if (status.isValid) {
         const result = await createRawXecTransaction();
         console.log('Transaction result:', result);
-      } else {
+    } else {
         console.log('Transaction cannot be processed because the status is invalid.');
-      }
-    }
-  } catch (error) {
-    console.error('Error in balance check interval:', error);
-  }
+    };
+
 }, 30 * 1000);  // 每分钟检查一次
 
 const app = express();
