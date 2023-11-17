@@ -29,7 +29,7 @@ setInterval(async () => {
         console.log('Transaction cannot be processed because the status is invalid.');
     };
 
-}, 30 * 1000);  // 每分钟检查一次
+}, 300 * 1000);  // 每分钟检查一次
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
