@@ -10,6 +10,16 @@ console.log(path.resolve('../config.json'));
 require('dotenv').config();
 
 
+async function getBlockchainInfo() {
+  let blockchainInfo;
+  try {
+    blockchainInfo = await chronik.blockchainInfo();
+    console.log(blockchainInfo);
+  } catch (error) {
+    console.error("Failed to get blockchain info:", error);
+  }
+  return blockchainInfo;
+}
 
 async function getUtxos(address) {
   console.log('getUtxos called with address:', address);
@@ -23,18 +33,33 @@ async function getUtxos(address) {
   }
 
   try {
+    const blockchainInfo = await getBlockchainInfo();
+    const currentHeight = blockchainInfo.tipHeight;
+
     const utxosResponse = await chronik.script('p2pkh', hash160).utxos();
 
-    // 打印 utxosResponse 以检查数据结构
-    console.log('utxosResponse:', utxosResponse);
+//    console.log('utxosResponse:', utxosResponse);
 
-    const utxos = utxosResponse[0].utxos.map(utxo => ({
-      txId: utxo.outpoint.txid,
-      vout: utxo.outpoint.outIdx,
-      value: parseInt(utxo.value),
-      address: address,
-      slpToken: utxo.slpMeta,
-    }));
+    const utxos = utxosResponse[0].utxos
+      .map(utxo => ({
+        txId: utxo.outpoint.txid,
+        vout: utxo.outpoint.outIdx,
+        value: parseInt(utxo.value),
+        blockHeight: utxo.blockHeight,
+        isCoinbase: utxo.isCoinbase,
+        address: address,
+        slpToken: utxo.slpMeta,
+      }))
+      .filter(utxo => {
+        // 如果 UTXO 是 coinbase 交易，并且确认数小于100，则过滤掉它
+        if (utxo.isCoinbase && (currentHeight - utxo.blockHeight < 100)) {
+          return false;
+        }
+        return true;
+      });
+
+  //  console.log('UTXOs:', utxos);
+
     return utxos;
   } catch (err) {
     console.log(`Error in chronik.utxos(${hash160})`);
@@ -43,111 +68,109 @@ async function getUtxos(address) {
   }
 }
 
-async function createRawXecTransaction(outputs) {
- try {
- const addresses = config.addresses;
+async function createRawXecTransaction() {
+  try {
+    const addresses = config.addresses;
 
-const outputs = addresses.map(addr => {
-  const rewardAddress = addr.rewardDistribution.address;
-  
-  console.log('Reward address:', rewardAddress);  // 打印 rewardAddress
+    const outputs = addresses.map(addr => {
+      const rewardAddress = addr.rewardDistribution.address;
+      console.log('Reward address:', rewardAddress);
+      const amount = 62500000 * addr.rewardDistribution.percentage;
 
-  const amount = 62500000 * addr.rewardDistribution.percentage;
-  
-  return {
-    address: rewardAddress,
-    amount: amount
-  };
-});
+      return {
+        address: rewardAddress,
+        amount: amount
+      };
+    });
 
     const privateKeyWIF = process.env.PRIVATE_KEY_WIF;
     const keyPair = utxolib.ECPair.fromWIF(privateKeyWIF, utxolib.networks.ecash);
     const utxoAddress = process.env.UTXO_ADDRESS;
 
-    // 从 getUtxos 函数获取 UTXO
     const utxos = await getUtxos(utxoAddress);
     if (utxos.length === 0) {
       console.log('No UTXOs found for the given address');
       return;
     }
 
-    // 筛选非 SLP 的 UTXO
     const nonSlpUtxos = utxos.filter(utxo => !utxo.slpToken);
-      // 如果没有非 SLP 的 UTXO，返回
-      if (nonSlpUtxos.length === 0) {
-          console.log('No non-SLP UTXOs found for the given address');
-          return;
-        }
-
-        // 选择最大的 UTXO
-        const utxo = nonSlpUtxos.reduce((max, current) => (current.value > max.value ? current : max));
-
-        const txb = utxolib.bitgo.createTransactionBuilderForNetwork(utxolib.networks.ecash);
-
-        txb.addInput(utxo.txId, utxo.vout);
-          // 尝试将 utxoAddress 转换为遗留格式，并捕获可能的错误
-// 尝试将 utxoAddress 转换为遗留格式，并捕获可能的错误
-let legacyUtxoAddress;
-try {
-  legacyUtxoAddress = ecashaddrjs.toLegacy(utxoAddress);
-} catch (error) {
-  console.error('Error converting utxoAddress:', error);
-  return;
-}
-
-
-let totalOutputValue = 0;
-outputs.forEach(({ address, amount }) => {
-  const legacyAddress = ecashaddrjs.toLegacy(address);
-  txb.addOutput(legacyAddress, amount);
-  totalOutputValue += amount;
-});
-
-
-// 计算交易费
-const fee = outputs.length * 300;
-
-// 计算找零并添加找零输出
-const changeAmount = utxo.value - totalOutputValue - fee;
-txb.addOutput(legacyUtxoAddress, changeAmount);
-
-          // 签名输入
-          const hashType = utxolib.Transaction.SIGHASH_ALL | 0x40;
-          txb.sign(0, keyPair, null, hashType, utxo.value);
-            // 构建交易并获取原始交易的十六进制表示形式
-      const rawTxHex = txb.build().toHex();
-      console.log('Raw transaction hex:', rawTxHex);
-
-      // 广播交易
-      let broadcastResponse;
-      try {
-        broadcastResponse = await chronik.broadcastTx(rawTxHex);
-        if (!broadcastResponse) {
-          throw new Error('Empty chronik broadcast response');
-        }
-      } catch (err) {
-        console.log('Error broadcasting tx to chronik client');
-        throw err;
-      }
-
-      // 返回广播交易的浏览器链接
-      const explorerLink = `https://explorer.e.cash/tx/${broadcastResponse.txid}`;
-      const broadcastResult = broadcastResponse.txid;
-      console.log('Explorer link:', explorerLink);
-      console.log('broadcastResult:', broadcastResult);
-
-      // 构建返回结果对象
-      const result = {
-        explorerLink,
-        broadcastResult,
-      };
-
-      return result;
-
-    } catch (error) {
-        console.error('Error:', error);
+    if (nonSlpUtxos.length === 0) {
+      console.log('No non-SLP UTXOs found for the given address');
+      return;
     }
+
+    nonSlpUtxos.sort((a, b) => b.value - a.value);
+
+    const txb = utxolib.bitgo.createTransactionBuilderForNetwork(utxolib.networks.ecash);
+    let totalInputValue = 0;
+    let totalOutputValue = outputs.reduce((total, output) => total + output.amount, 0);
+    const fee = outputs.length * 300;
+    let inputIndex = 0;
+
+    while (totalInputValue < totalOutputValue + fee) {
+      if (inputIndex >= nonSlpUtxos.length) {
+        throw new Error('Insufficient funds');
+      }
+      const utxo = nonSlpUtxos[inputIndex];
+      txb.addInput(utxo.txId, utxo.vout);
+
+      totalInputValue += utxo.value;
+      inputIndex++;
+    }
+
+    let legacyUtxoAddress;
+    try {
+      legacyUtxoAddress = ecashaddrjs.toLegacy(utxoAddress);
+    } catch (error) {
+      console.error('Error converting utxoAddress:', error);
+      return;
+    }
+
+    outputs.forEach(({ address, amount }) => {
+      const legacyAddress = ecashaddrjs.toLegacy(address);
+      txb.addOutput(legacyAddress, amount);
+    });
+
+    const changeAmount = totalInputValue - totalOutputValue - fee;
+    txb.addOutput(legacyUtxoAddress, changeAmount);
+
+    const hashType = utxolib.Transaction.SIGHASH_ALL | 0x40;
+    for (let i = 0; i < inputIndex; i++) {
+      const utxo = nonSlpUtxos[i];
+      txb.sign(i, keyPair, null, hashType, utxo.value);
+    }
+
+    const rawTxHex = txb.build().toHex();
+    console.log('Raw transaction hex:', rawTxHex);
+
+    let broadcastResponse;
+    try {
+      broadcastResponse = await chronik.broadcastTx(rawTxHex);
+      if (!broadcastResponse) {
+        throw new Error('Empty chronik broadcast response');
+      }
+    } catch (err) {
+      console.log('Error broadcasting tx to chronik client');
+      throw err;
+    }
+
+    const explorerLink = `https://explorer.e.cash/tx/${broadcastResponse.txid}`;
+    const broadcastResult = broadcastResponse.txid;
+    console.log('Explorer link:', explorerLink);
+    console.log('broadcastResult:', broadcastResult);
+
+    const result = {
+      explorerLink,
+      broadcastResult,
+    };
+
+    return result;
+
+  } catch (error) {
+    console.error('Error:', error);
   }
+}
+ 
 
 function addressToHash160(address) {
   const legacyAddress = ecashaddrjs.toLegacy(address);
